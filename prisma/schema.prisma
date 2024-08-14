@@ -1,0 +1,87 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Usuario {
+  id        Int    @id @default(autoincrement())
+  nombre    String
+  correo    String @unique
+  password  String @db.Text
+  telefono  String
+  direccion String @db.Text
+  rol       Role   @default(SUSCRIPTOR)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  encuestas EncuestasOnUsuarios[]
+}
+
+model Encuesta {
+  id               Int      @id @default(autoincrement())
+  titulo           String
+  fechaInicio      DateTime
+  fechaFin         DateTime
+  descripcion      String   @db.Text
+  estatus          Estatus  @default(INICIAL)
+  encuestasTomadas Int      @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  usuarios  EncuestasOnUsuarios[]
+  preguntas Preguntas[]
+}
+
+model Preguntas {
+  id            Int           @id @default(autoincrement())
+  descripcion   String        @db.Text
+  tipoRespuesta TipoRespuesta
+  idEncuesta    Int
+
+  encuesta Encuesta @relation(fields: [idEncuesta], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model EncuestasOnUsuarios {
+  id         Int @id @default(autoincrement())
+  idEncuesta Int
+  idUsuario  Int
+
+  encuesta Encuesta @relation(fields: [idEncuesta], references: [id])
+  usuario  Usuario  @relation(fields: [idUsuario], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum Role {
+  SUSCRIPTOR
+  ADMIN
+  STAFF
+}
+
+enum TipoRespuesta {
+  SENCILLA
+  MULTIPLE
+  LIBRE
+}
+
+enum Estatus {
+  INICIAL
+  ACTIVA
+  DESACTIVADA
+}
