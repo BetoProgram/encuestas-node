@@ -9,7 +9,11 @@ const db_1 = require("../config/db");
 const auth_service_1 = require("../utils/auth.service");
 const getUsuarios = async (req, res) => {
     try {
-        const usuarios = await db_1.prisma.usuario.findMany({});
+        const usuarios = await db_1.prisma.usuario.findMany({
+            orderBy: {
+                createdAt: 'desc'
+            }
+        });
         const data = usuarios.map(({ password, ...rest }) => rest);
         res.json(data);
     }
