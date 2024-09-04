@@ -6,7 +6,11 @@ import { generarToken } from '../utils/auth.service';
 
 export const getUsuarios = async(req:Request, res:Response) => {
     try {
-        const usuarios = await prisma.usuario.findMany({});
+        const usuarios = await prisma.usuario.findMany({
+            orderBy: {
+                createdAt: 'desc'
+            }
+        });
         const data = usuarios.map(({ password, ...rest }) => rest);
         res.json(data)
     } catch (error) {
