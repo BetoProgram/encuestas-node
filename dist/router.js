@@ -12,7 +12,7 @@ const router = (0, express_1.Router)();
 router.get('/encuesta', middlewares_1.authenticate, (0, middlewares_1.authorize)(['STAFF', 'ADMIN']), EncuestasController_1.getEncuestas);
 router.post('/encuesta', (0, express_validator_1.body)('titulo').notEmpty().withMessage('El titulo es obligatorio'), (0, express_validator_1.body)('fechaInicio').notEmpty().withMessage('La fecha de Inicio es obligatoria')
     .isDate().withMessage('La fecha de inicio no es valida'), (0, express_validator_1.body)('fechaFin').notEmpty().withMessage('La fecha de Final es obligatoria')
-    .isDate().withMessage('La fecha final no es valida'), middlewares_1.handleInputErrors, middlewares_1.authenticate, (0, middlewares_1.authorize)(['STAFF', 'ADMIN']), EncuestasController_1.crearEncuesta);
+    .isDate().withMessage('La fecha final no es valida'), (0, express_validator_1.body)('descripcion').notEmpty().withMessage('La descripcion es obligatoria'), middlewares_1.handleInputErrors, middlewares_1.authenticate, (0, middlewares_1.authorize)(['STAFF', 'ADMIN']), EncuestasController_1.crearEncuesta);
 router.put('/encuesta/:id', (0, express_validator_1.param)('id').isInt().withMessage('ID no válido'), (0, express_validator_1.body)('titulo').notEmpty().withMessage('El titulo es obligatorio'), (0, express_validator_1.body)('fechaInicio').notEmpty().withMessage('La fecha de Inicio es obligatoria')
     .isDate().withMessage('La fecha de inicio no es valida'), (0, express_validator_1.body)('fechaFin').notEmpty().withMessage('La fecha de Final es obligatoria')
     .isDate().withMessage('La fecha final no es valida'), middlewares_1.handleInputErrors, middlewares_1.authenticate, (0, middlewares_1.authorize)(['STAFF', 'ADMIN']), EncuestasController_1.crearEncuesta);

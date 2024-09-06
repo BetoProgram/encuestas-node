@@ -17,6 +17,7 @@ router.post('/encuesta',
         .isDate().withMessage('La fecha de inicio no es valida'),
     body('fechaFin').notEmpty().withMessage('La fecha de Final es obligatoria')
         .isDate().withMessage('La fecha final no es valida'),
+    body('descripcion').notEmpty().withMessage('La descripcion es obligatoria'),
     handleInputErrors,
     authenticate, authorize(['STAFF', 'ADMIN']), crearEncuesta);
 
